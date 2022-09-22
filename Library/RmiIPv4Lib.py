@@ -17,11 +17,11 @@ class IPv4:
         if (self.oct1 > 255 or self.oct1 < 0) or (not isinstance(self.oct1, int)):
             raise ValueError(error+'1. Value: '+str(self.oct1))
         elif (self.oct2 > 255 or self.oct2 < 0) or (not isinstance(self.oct2, int)):
-            raise ValueError(error+'1. Value: '+str(self.oct2))
+            raise ValueError(error+'2. Value: '+str(self.oct2))
         elif (self.oct3 > 255 or self.oct3 < 0) or (not isinstance(self.oct3, int)):
-            raise ValueError(error+'1. Value: '+str(self.oct3))
+            raise ValueError(error+'3. Value: '+str(self.oct3))
         elif (self.oct4 > 255 or self.oct4 < 0) or (not isinstance(self.oct4, int)):
-            raise ValueError(error+'1. Value: '+str(self.oct4))
+            raise ValueError(error+'4. Value: '+str(self.oct4))
 
     def get_binary_string(self) -> string:
         return bnh.int_to_bin(self.oct1)+bnh.int_to_bin(self.oct2)+bnh.int_to_bin(self.oct3)+bnh.int_to_bin(self.oct4)
