@@ -20,6 +20,18 @@ class binaryNumbersHandler:
         return int(bin, 2)
     
     @staticmethod
+    def add_ones_to_the_right(ditance) -> string:
+        oct = ""
+        for i in range(8):
+            if i < ditance:
+                oct += '1'
+            else:
+                oct += '0'
+        return binaryNumbersHandler.bin_to_int(oct)
+    
+    
+    
+    @staticmethod
     def addEspecificOne(octect: int, pos: int):
         pos = pos-1
         strBin = list(binaryNumbersHandler.int_to_bin(octect)) 
