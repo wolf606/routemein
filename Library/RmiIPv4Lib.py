@@ -1,5 +1,6 @@
 from cgi import print_arguments
 import string
+from webbrowser import get
 
 
 from Library.RmiBinaryNumbersLib import binaryNumbersHandler as bnh
@@ -65,7 +66,7 @@ class IPv4:
         limit =  self.mask//8 
         for i in range(self.ipV4.__len__()):
             if i == limit:
-                ip += str(bnh.add_ones_to_the_right( self.mask - 8*i))
+                ip += str(256-self.getHosts())
             elif i<limit:
                 ip += '255'
             else:
@@ -88,10 +89,11 @@ class IPv4:
         
 
     def getHosts(self) -> int:
-        return 2**(32-self.mask)-2
+        return 2**(32-self.mask)
     
     def getRed(self) -> string:
-        return str(self.ipV4[0])+'.'+str(self.ipV4[1])+'.'+str(self.ipV4[2])+'.'+str(0)
+        return 2**(self.mask)
+    
     
     
     def getClass(self) -> string: 
