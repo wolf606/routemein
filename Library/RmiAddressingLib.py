@@ -1,5 +1,5 @@
 import random
-from Library.RmiQuickSort import quicksort as qs
+from Library.RmiQuickSortLib import quicksort as qs
 from Library.RmiIPv4Lib import IPv4
 from Library.RmiBinaryNumbersLib import binaryNumbersHandler as bnh
 
