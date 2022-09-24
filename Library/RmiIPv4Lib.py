@@ -1,7 +1,5 @@
 from cgi import print_arguments
 import string
-
-
 from Library.RmiBinaryNumbersLib import binaryNumbersHandler as bnh
 
 class IPv4:
@@ -45,44 +43,49 @@ class IPv4:
 
     def wildcard(self) -> string:
         ip = ''
-        limit =  self.mask//8 
+        aux = self.mask
         for i in range(self.ipV4.__len__()):
-            if i == limit:
-                ip += str(2**(8-(self.mask - 8*i ))-1)
-            elif i<limit:
+            if aux > 8:
                 ip += '0'
+            elif aux < 8 and aux > 0:
+                ip += str(2**(8-aux)-1)
             else:
-                ip += '255'  
-                    
+                ip += '255' 
+                       
             if i < 3:
-                ip += '.'  
+                ip += '.' 
+            aux -= 8
         return ip
     
-            
-        
+    
     def getMaskIp(self) -> string:
         ip = ''
-        limit =  self.mask//8 
+        aux = self.mask
         for i in range(self.ipV4.__len__()):
-            if i == limit:
-                ip += str(bnh.add_ones_to_the_right( self.mask - 8*i))
-            elif i<limit:
+            if aux > 8:
                 ip += '255'
+            elif aux < 8 and aux > 0:
+                ip += str(255-(2**(8-aux)-1))
             else:
                 ip += '0'  
                     
             if i < 3:
                 ip += '.'  
+            aux -= 8
         return ip
     
     
     """el incremento es para saber cuantas subclases aumentamos desde la ip con su mascara  """
     def increaseSubclass(self, increase: int):
-        
+      
         auxIp = IPv4(self.ipV4[0], self.ipV4[1], self.ipV4[2], self.ipV4[3], self.mask)
-        limit = self.mask//8
         for i in range(increase):
-            auxIp.ipV4[limit] = bnh.addEspecificOne(auxIp.ipV4[limit],(self.mask - 8*limit))
+            aux = self.mask
+            for i in range(self.ipV4.__len__()):
+                if aux < 8 and aux > 0:
+                    auxIp.ipV4[i] = bnh.addEspecificOne(auxIp.ipV4[i],aux)
+                aux -= 8
+            print(bnh.int_to_bin(auxIp.ipV4[3]))
         return auxIp
     
         

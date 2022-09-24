@@ -15,8 +15,8 @@ print(one) """
 
 one = ip(192, 10, 253, 10,30)
 
-""" one.oct3 = bnh.addEspecificOne(one.ipV4[3], 7)  """
+one.oct3 = bnh.addEspecificOne(one.ipV4[3], 7) 
 print (one)
 print (one.getMaskIp())  
 print (one.wildcard())  
-print (one.increaseSubclass(1))
+print (one.increaseSubclass(2))
