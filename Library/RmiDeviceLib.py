@@ -1,11 +1,8 @@
-import string
-from Library.RmiIPv4Lib import IPv4
-
 class device:
     
     port = '0/0'
 
-    def __init__(self, name:string) -> None:
+    def __init__(self, name:str) -> None:
         """Creates a device object.
 
         This device can be a router or a PC.
@@ -28,7 +25,7 @@ class device:
         #networks inside serial interface only
         self.serial = []
 
-    def get_interface_port(self, index: int) -> string:
+    def get_interface_port(self, index: int) -> str:
         """Returns string of the port according to the index
 
         When traversing the list of fe or serial it comes in handy to print the port

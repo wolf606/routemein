@@ -1,11 +1,10 @@
-import string
-
 class binaryNumbersHandler:
     
+    ones='11111111111111111111111111111111'
     zeros='00000000000000000000000000000000'
 
     @staticmethod
-    def sum(num1: string, num2: string) -> string:
+    def sum(num1: str, num2: str) -> str:
         """Adds two numbers in binary.
 
         Parameters
@@ -19,7 +18,7 @@ class binaryNumbersHandler:
         return binaryNumbersHandler.int_to_bin(int(num1,2)+int(num2,2))
 
     @staticmethod
-    def int_to_bin(num: int) -> string:
+    def int_to_bin(num: int) -> str:
         """Converts a number in integer to binary.
 
         Parameters
