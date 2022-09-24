@@ -17,6 +17,6 @@ This repository contains libraries that acts as modules to provide finctionality
 
 ### Credits
 
-- [luismsanchezp] (<https://github.com/luismsanchezp>)
-- [JuanSebastianCG] (<https://github.com/JuanSebastianCG>)
+- [luismsanchezp](<https://github.com/luismsanchezp>)
+- [JuanSebastianCG](<https://github.com/JuanSebastianCG>)
 - Programiz for Quick Sort algorithm implementation.
