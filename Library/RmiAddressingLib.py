@@ -1,4 +1,5 @@
 import random
+from Library.RmiNetworkLib import network
 from Library.RmiQuickSortLib import quicksort as qs
 from Library.RmiIPv4Lib import IPv4
 from Library.RmiBinaryNumbersLib import binaryNumbersHandler as bnh
@@ -13,7 +14,7 @@ class addressing:
     }
 
     @staticmethod
-    def select_ip(networks: list) -> int:
+    def set_first_ip(networks: list) -> int:
         """Selects the first IP for the first network in the list.
 
         This is where the addressing starts.
@@ -29,7 +30,7 @@ class addressing:
         ip_class = addressing.select_ip_class(max_hosts)
         networks[0].network_ip = addressing.ips.get(ip_class)
         reserved_bits = addressing.calculate_reserved_bits(networks[0].hosts)
-        networks[0].mask = IPv4.create_mask_ip_from_reserved_bits(reserved_bits)
+        networks[0].mask = network.create_network_mask_reserved_bits(reserved_bits)
         return reserved_bits
 
     @staticmethod
@@ -51,7 +52,7 @@ class addressing:
             return 'C'
 
     @staticmethod
-    def address(networks: list) -> None:
+    def address_list(networks: list) -> None:
         """Handles the addressing of the networks inside a list.
 
         The list must contain network objects.
@@ -62,13 +63,13 @@ class addressing:
             The list filled with networks.
 
         """
-        reserved_bits = addressing.select_ip(networks)
+        reserved_bits = addressing.set_first_ip(networks)
         for i in range(1,len(networks)):
             prev_ip = networks[i-1].network_ip.get_binary_string()
             new_ip = bnh.sum(prev_ip,'1'+bnh.zeros[:reserved_bits])
             networks[i].network_ip = IPv4.create_new_ip_from_string(new_ip)
             reserved_bits = addressing.calculate_reserved_bits(networks[i].hosts)
-            networks[i].mask = IPv4.create_mask_ip_from_reserved_bits(reserved_bits)
+            networks[i].mask = network.create_network_mask_reserved_bits(reserved_bits)
 
     @staticmethod
     def calculate_reserved_bits(hosts: int) -> int:

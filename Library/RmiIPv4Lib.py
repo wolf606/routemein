@@ -112,16 +112,3 @@ class IPv4:
         if oct1 >= 0 and oct1 <= 127: return 'A'
         elif oct1 >= 128 and oct1 <= 191: return 'B'
         elif oct1 >= 192 and oct1 <= 223: return 'C'
-    
-    @staticmethod
-    def create_mask_ip_from_reserved_bits(reserved_bits: int):
-        """Returns an IPv4 object that holds a mask ip made 
-        the reserved bits.
-
-        Parameters
-        ----------
-        reserved_bits : int
-            The number of reserved bits.
-        """
-        mask_num = 32-reserved_bits
-        return IPv4.create_new_ip_from_string(bnh.ones[:mask_num]+bnh.zeros[:reserved_bits])

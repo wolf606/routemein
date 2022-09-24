@@ -32,8 +32,21 @@ class network:
         self.mask = None
         #We save tuples of (device, ip) inside of the devices list.
         self.devices = []
+
+    @staticmethod
+    def create_network_mask_reserved_bits(reserved_bits: int):
+        """Returns an IPv4 object that holds a mask ip made 
+        from the reserved bits.
+
+        Parameters
+        ----------
+        reserved_bits : int
+            The number of reserved bits.
+        """
+        mask_num = 32-reserved_bits
+        return IPv4.create_new_ip_from_string(bnh.ones[:mask_num]+bnh.zeros[:reserved_bits])
     
-    def calculate_new_ip(self) -> IPv4:
+    def calculate_new_device_ip(self) -> IPv4:
         """When adding a device, we handle the IP assignation here.
 
         If there are no devices we start from the network_ip, however
@@ -51,7 +64,7 @@ class network:
                 #the binary numbers handler. Then we use the IPv4 function
                 #to create a new IPv4 object from the result of the sum.
                 return IPv4.create_new_ip_from_string(bnh.sum(self.network_ip.get_binary_string(), '1'))
-            else: raise ValueError('RmiNetworkLib: network_ip is None. cant create ip with calculate_new_ip()')
+            else: raise ValueError('RmiNetworkLib: network_ip is None. cant create ip with calculate_new_device_ip()')
         else:
             #Get the last device on the devices list and get its IP
             #Since we save devices as a tuple of (device, ip), 
@@ -76,7 +89,7 @@ class network:
             If device is None.
         """
         if not device == None:
-            new_ip = self.calculate_new_ip()
+            new_ip = self.calculate_new_device_ip()
             if not new_ip == None: self.devices.append((device, new_ip ))
             else: raise ValueError("RmiNetworkLib: add_device() new_ip as None type")
         else: raise ValueError("RmiNetworkLib: add_device() received device argument as None type")

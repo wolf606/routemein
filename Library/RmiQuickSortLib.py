@@ -17,9 +17,9 @@ class quicksort:
         networks[ptr], networks[r] = networks[r], networks[ptr]
         return ptr
  
-# With quicksort() function, we will be utilizing the above code to obtain the pointer
-# at which the left values are all smaller than the number at pointer index and vice versa
-# for the right values.
+    # With quicksort() function, we will be utilizing the above code to obtain the pointer
+    # at which the left values are all smaller than the number at pointer index and vice versa
+    # for the right values.
  
     @staticmethod
     def sorting(l, r, networks: list) -> list:
