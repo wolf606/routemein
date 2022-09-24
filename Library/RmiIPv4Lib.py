@@ -1,106 +1,35 @@
-from cgi import print_arguments
 import string
 from Library.RmiBinaryNumbersLib import binaryNumbersHandler as bnh
 
 class IPv4:
-    def __init__(self, oct1: int, oct2: int, oct3: int, oct4: int, mask: int = 8):
-        self.ipV4 = [oct1, oct2, oct3, oct4]
-        self.mask = mask
+    def __init__(self, oct1: int, oct2: int, oct3: int, oct4: int):
+        self.oct1 = oct1
+        self.oct2 = oct2
+        self.oct3 = oct3
+        self.oct4 = oct4
         self.check_ip()
 
     def __str__(self) -> string:
-        return str(self.ipV4[0])+'.'+str(self.ipV4[1])+'.'+str(self.ipV4[2])+'.'+str(self.ipV4[3])
+        return str(self.oct1)+'.'+str(self.oct2)+'.'+str(self.oct3)+'.'+str(self.oct4)
 
-
-    """ verifica si la ip es de tipo int y si es mayor que 0 y menor que 255 """
     def check_ip(self) -> None:
         error = 'RmiIPv4Lib: Invalid value for IP at octet '
-        if (self.ipV4[0] > 255 or self.ipV4[0] < 0) or (not isinstance(self.ipV4[0], int)):
-            raise ValueError(error+'1. Value: '+str(self.ipV4[0]))
-        elif (self.ipV4[1] > 255 or self.ipV4[1] < 0) or (not isinstance(self.ipV4[1], int)):
-            raise ValueError(error+'1. Value: '+str(self.ipV4[1]))
-        elif (self.ipV4[2] > 255 or self.ipV4[2] < 0) or (not isinstance(self.ipV4[2], int)):
-            raise ValueError(error+'1. Value: '+str(self.ipV4[2]))
-        elif (self.ipV4[3] > 255 or self.ipV4[3] < 0) or (not isinstance(self.ipV4[3], int)):
-            raise ValueError(error+'1. Value: '+str(self.ipV4[3]))
+        if (self.oct1 > 255 or self.oct1 < 0) or (not isinstance(self.oct1, int)):
+            raise ValueError(error+'1. Value: '+str(self.oct1))
+        elif (self.oct2 > 255 or self.oct2 < 0) or (not isinstance(self.oct2, int)):
+            raise ValueError(error+'1. Value: '+str(self.oct2))
+        elif (self.oct3 > 255 or self.oct3 < 0) or (not isinstance(self.oct3, int)):
+            raise ValueError(error+'1. Value: '+str(self.oct3))
+        elif (self.oct4 > 255 or self.oct4 < 0) or (not isinstance(self.oct4, int)):
+            raise ValueError(error+'1. Value: '+str(self.oct4))
 
-
-    """ retorna la ip en formato binario """
     def get_binary_string(self) -> string:
-        return bnh.int_to_bin(self.ipV4[0])+bnh.int_to_bin(self.ipV4[1])+bnh.int_to_bin(self.ipV4[2])+bnh.int_to_bin(self.ipV4[3])
+        return bnh.int_to_bin(self.oct1)+bnh.int_to_bin(self.oct2)+bnh.int_to_bin(self.oct3)+bnh.int_to_bin(self.oct4)
 
-
-    """ cambia el valor de la ip a la siguiente ip ingresada
-        recuerda que binary_number es un objeto de la clase binaryNumber que permite convertir un string a binari, tomando en cuenta los 8 primeros digitos del string
-    """
     def set_ip_value_binary_str(self, binary_str: string) -> None:
         if not len(binary_str) == 32:
             raise ValueError('RmiIPv4Lib: String arr length is not exactly 32. Length: '+str(len(binary_str)))
         else:
             IPv4(int(binary_str[:8], 2), int(binary_str[8:16], 2), int(binary_str[16:24], 2), int(binary_str[24:32], 2))
-            self.ipV4[0], self.ipV4[1], self.ipV4[2], self.ipV4[3] = int(binary_str[:8], 2), int(binary_str[8:16], 2), int(binary_str[16:24], 2), int(binary_str[24:32], 2)
+            self.oct1, self.oct2, self.oct3, self.oct4 = int(binary_str[:8], 2), int(binary_str[8:16], 2), int(binary_str[16:24], 2), int(binary_str[24:32], 2)
 
-
-    def wildcard(self) -> string:
-        ip = ''
-        aux = self.mask
-        for i in range(self.ipV4.__len__()):
-            if aux > 8:
-                ip += '0'
-            elif aux < 8 and aux > 0:
-                ip += str(2**(8-aux)-1)
-            else:
-                ip += '255' 
-                       
-            if i < 3:
-                ip += '.' 
-            aux -= 8
-        return ip
-    
-    
-    def getMaskIp(self) -> string:
-        ip = ''
-        aux = self.mask
-        for i in range(self.ipV4.__len__()):
-            if aux > 8:
-                ip += '255'
-            elif aux < 8 and aux > 0:
-                ip += str(255-(2**(8-aux)-1))
-            else:
-                ip += '0'  
-                    
-            if i < 3:
-                ip += '.'  
-            aux -= 8
-        return ip
-    
-    
-    """el incremento es para saber cuantas subclases aumentamos desde la ip con su mascara  """
-    def increaseSubclass(self, increase: int):
-      
-        auxIp = IPv4(self.ipV4[0], self.ipV4[1], self.ipV4[2], self.ipV4[3], self.mask)
-        for i in range(increase):
-            aux = self.mask
-            for i in range(self.ipV4.__len__()):
-                if aux < 8 and aux > 0:
-                    auxIp.ipV4[i] = bnh.addEspecificOne(auxIp.ipV4[i],aux)
-                aux -= 8
-            print(bnh.int_to_bin(auxIp.ipV4[3]))
-        return auxIp
-    
-        
-
-    def getHosts(self) -> int:
-        return 2**(32-self.mask)-2
-    
-    def getRed(self) -> string:
-        return str(self.ipV4[0])+'.'+str(self.ipV4[1])+'.'+str(self.ipV4[2])+'.'+str(0)
-    
-    
-    def getClass(self) -> string: 
-        if self.mask <= 255  and self.mask >= 0:
-            return 'C'
-        elif self.mask <= 65535 and self.mask >= 256:
-            return 'B'
-        elif self.mask <= 16777215 and self.mask >= 65536:
-            return 'A'
