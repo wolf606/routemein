@@ -1,4 +1,3 @@
-import string
 from Library.RmiBinaryNumbersLib import binaryNumbersHandler as bnh
 
 class IPv4:
@@ -32,13 +31,13 @@ class IPv4:
         self.oct4 = oct4
         self.check_ip()
 
-    def __str__(self) -> string:
+    def __str__(self) -> str:
         """Returns the IP object in a string with the format 'X.X.X.X'.
 
         """
         return str(self.oct1)+'.'+str(self.oct2)+'.'+str(self.oct3)+'.'+str(self.oct4)
 
-    def get_ip_class(self) -> string:
+    def get_ip_class(self) -> str:
         """Returns as a character the class of the IP object
 
         """
@@ -64,13 +63,13 @@ class IPv4:
         elif (self.oct4 > 255 or self.oct4 < 0) or (not isinstance(self.oct4, int)):
             raise ValueError(error+'4. Value: '+str(self.oct4))
 
-    def get_binary_string(self) -> string:
+    def get_binary_string(self) -> str:
         """Returns the full IP in binary as a string
 
         """
         return bnh.int_to_bin(self.oct1)+bnh.int_to_bin(self.oct2)+bnh.int_to_bin(self.oct3)+bnh.int_to_bin(self.oct4)
     
-    def set_ip_value_binary_str(self, binary_str: string) -> None:
+    def set_ip_value_binary_str(self, binary_str: str) -> None:
         """Sets the value of the IP object (octet by octet) when it receives an IP in binary as a string
 
         Parameters
@@ -88,9 +87,9 @@ class IPv4:
             IPv4(int(binary_str[:8], 2), int(binary_str[8:16], 2), int(binary_str[16:24], 2), int(binary_str[24:32], 2))
             #if the IP is valid an exception is raised, else we set the values of the octets with the ones of the binary_str
             self.oct1, self.oct2, self.oct3, self.oct4 = int(binary_str[:8], 2), int(binary_str[8:16], 2), int(binary_str[16:24], 2), int(binary_str[24:32], 2)
-
+    
     @staticmethod
-    def create_new_ip_from_string(binary_str: string):
+    def create_new_ip_from_string(binary_str: str):
         """Creates an IP object from a string of an IP in binary.
 
         Parameters
@@ -101,7 +100,7 @@ class IPv4:
         return IPv4(int(binary_str[:8], 2), int(binary_str[8:16], 2), int(binary_str[16:24], 2), int(binary_str[24:32], 2))
 
     @staticmethod
-    def get_ip_class_from_string(binary_str: string) -> string:
+    def get_ip_class_from_string(binary_str: str) -> str:
         """Returns as a character the class of an IP that is in binary.
 
         Parameters
@@ -113,3 +112,16 @@ class IPv4:
         if oct1 >= 0 and oct1 <= 127: return 'A'
         elif oct1 >= 128 and oct1 <= 191: return 'B'
         elif oct1 >= 192 and oct1 <= 223: return 'C'
+    
+    @staticmethod
+    def create_mask_ip_from_reserved_bits(reserved_bits: int):
+        """Returns an IPv4 object that holds a mask ip made 
+        the reserved bits.
+
+        Parameters
+        ----------
+        reserved_bits : int
+            The number of reserved bits.
+        """
+        mask_num = 32-reserved_bits
+        return IPv4.create_new_ip_from_string(bnh.ones[:mask_num]+bnh.zeros[:reserved_bits])

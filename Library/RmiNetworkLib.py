@@ -1,4 +1,3 @@
-import string
 from Library.RmiBinaryNumbersLib import binaryNumbersHandler as bnh
 from Library.RmiIPv4Lib import IPv4
 from Library.RmiDeviceLib import device
@@ -61,7 +60,7 @@ class network:
             last_ip = self.devices[len(self.devices)-1][1]
             return IPv4.create_new_ip_from_string(bnh.sum(last_ip.get_binary_string(), '1'))
 
-    def add_device(self, device: device):
+    def add_device(self, device: device) -> None:
         """We handle the connection of devices to the network here
 
         Calculate a new IP and add it to the devices list
@@ -82,7 +81,7 @@ class network:
             else: raise ValueError("RmiNetworkLib: add_device() new_ip as None type")
         else: raise ValueError("RmiNetworkLib: add_device() received device argument as None type")
     
-    def get_device_ip(self, name: string) -> string:
+    def get_device_ip(self, name: str) -> str:
         """Get the IP of a particular device in the network.
         When traversing the networks of a device, you need the IP
         of the device inside that network. Since the IP it's saved
@@ -105,7 +104,7 @@ class network:
                 return str(dev[1])
         raise LookupError('RmiNetworkLib: device does not exist in network devices list')
 
-    def get_network_ip(self) -> string:
+    def get_network_ip(self) -> str:
         """Get the Network IP of the network object 
 
         Raises
@@ -116,7 +115,7 @@ class network:
         if not self.network_ip == None: return str(self.network_ip)
         else: raise ValueError("RmiNetworkLib: network_ip is None type")
 
-    def get_mask(self) -> string:
+    def get_mask(self) -> str:
         """Get the Mask of the network object 
 
         Raises
