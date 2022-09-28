@@ -1,6 +1,6 @@
-from Library.RmiBinaryNumbersLib import binaryNumbersHandler as bnh
-from Library.RmiIPv4Lib import IPv4
-from Library.RmiDeviceLib import device
+from Library.BinaryNumbersLib import binaryNumbersHandler as bnh
+from Library.Models.IPv4Lib import IPv4
+from Library.Models.Device import device
 
 class network:
 
@@ -32,19 +32,6 @@ class network:
         self.mask = None
         #We save tuples of (device, ip) inside of the devices list.
         self.devices = []
-
-    @staticmethod
-    def create_network_mask_reserved_bits(reserved_bits: int):
-        """Returns an IPv4 object that holds a mask ip made 
-        from the reserved bits.
-
-        Parameters
-        ----------
-        reserved_bits : int
-            The number of reserved bits.
-        """
-        mask_num = 32-reserved_bits
-        return IPv4.create_new_ip_from_string(bnh.ones[:mask_num]+bnh.zeros[:reserved_bits])
     
     def calculate_new_device_ip(self) -> IPv4:
         """When adding a device, we handle the IP assignation here.
@@ -117,7 +104,7 @@ class network:
                 return str(dev[1])
         raise LookupError('RmiNetworkLib: device does not exist in network devices list')
 
-    def get_network_ip(self) -> str:
+    def get_network_ip_str(self) -> str:
         """Get the Network IP of the network object 
 
         Raises
@@ -128,7 +115,7 @@ class network:
         if not self.network_ip == None: return str(self.network_ip)
         else: raise ValueError("RmiNetworkLib: network_ip is None type")
 
-    def get_mask(self) -> str:
+    def get_mask_str(self) -> str:
         """Get the Mask of the network object 
 
         Raises
