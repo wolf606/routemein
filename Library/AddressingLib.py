@@ -1,6 +1,6 @@
 import random
 from Library.QuickSortLib import quicksort as qs
-from Library.Models.IPv4Lib import IPv4
+from Library.IPv4Lib import IPv4
 from Library.BinaryNumbersLib import binaryNumbersHandler as bnh
 
 class addressing:

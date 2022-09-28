@@ -1,43 +1,54 @@
 from Library.BinaryNumbersLib import binaryNumbersHandler as bnh
-from Library.Models.IPv4Lib import IPv4
-from Library.Models.Device import device
+from Library.IPv4Lib import IPv4
+from Library.Models.Device import Device
 
-class network:
+class Network:
 
-    network_type = ('WAN', 'LAN')
+    types = ('WAN', 'LAN', 'VLAN')
 
     def __init__(self, type: int, hosts: int) -> None:
-        """Creation a network object.
+        """Creation of a Network object.
 
-        A network object has: 
+        A Network object has: 
             - type attribute that can either be WAN or LAN.
             - hosts attribute that stores the max number of hosts 
-            inside the network
-            - network_ip attribute that stores the network ip.
-            - mask attribute that stores the network mask.
+            inside the Network
+            - network_ip attribute that stores the Network ip.
+            - mask attribute that stores the Network mask.
             - devices list that stores the devices connected
-            to the network as a tuple of (devices, ip)
+            to the Network as a tuple of (devices, ip)
 
         Parameters
         ----------
         type : int
-            network class ha a tuple of ('WAN', 'LAN')
-            use index 0 or 1 for selecting the network type.
+            Network class ha a tuple of ('WAN', 'LAN', 'VLAN')
+            use index 0 or 1 for selecting the Network type.
         hosts : int
-            the max number of hosts inside the network
+            the max number of hosts inside the Network
         """
-        self.type = network.network_type[type]
+        self.type = Network.types[type]
         self.hosts = hosts
         self.network_ip = None
         self.mask = None
         #We save tuples of (device, ip) inside of the devices list.
         self.devices = []
+
+    def connected_devices(self) -> str:
+        if not len(self.devices) == 0:
+            res = '\nConnected devices: \n'
+            for dev in self.devices:
+                res = res + dev[0].type+' '+str(dev[0].name)+' with IP '+str(dev[1])+'\n'
+            return res
+        return ''
+
+    def __str__(self) -> str:
+        return self.type+'\n'+'Hosts: '+str(self.hosts)+'\n'+'Network Address: '+str(self.network_ip)+'\n'+'Mask: '+str(self.mask)+self.connected_devices()
     
     def calculate_new_device_ip(self) -> IPv4:
         """When adding a device, we handle the IP assignation here.
 
         If there are no devices we start from the network_ip, however
-        #if there are devices inside the network, use the IP from the last
+        #if there are devices inside the Network, use the IP from the last
         device inside the devices list.
 
         Raises
@@ -60,15 +71,15 @@ class network:
             last_ip = self.devices[len(self.devices)-1][1]
             return IPv4.create_new_ip_from_string(bnh.sum(last_ip.get_binary_string(), '1'))
 
-    def add_device(self, device: device) -> None:
-        """We handle the connection of devices to the network here
+    def add_device(self, device: Device) -> None:
+        """We handle the connection of devices to the Network here
 
         Calculate a new IP and add it to the devices list
 
         Parameters
         ----------
         device : device
-            The device that needs to be added to the network.
+            The device that needs to be added to the Network.
 
         Raises
         ------
@@ -82,10 +93,10 @@ class network:
         else: raise ValueError("RmiNetworkLib: add_device() received device argument as None type")
     
     def get_device_ip(self, name: str) -> str:
-        """Get the IP of a particular device in the network.
-        When traversing the networks of a device, you need the IP
-        of the device inside that network. Since the IP it's saved
-        inside the network as a tuple (device, ip) in the devices list
+        """Get the IP of a particular device in the Network.
+        When traversing the Networks of a device, you need the IP
+        of the device inside that Network. Since the IP it's saved
+        inside the Network as a tuple (device, ip) in the devices list
         it's necessary to find the device that matches the name of the
         one we're interested.
 
@@ -102,10 +113,10 @@ class network:
         for dev in self.devices:
             if dev[0].name == name:
                 return str(dev[1])
-        raise LookupError('RmiNetworkLib: device does not exist in network devices list')
+        raise LookupError('RmiNetworkLib: device does not exist in Network devices list')
 
     def get_network_ip_str(self) -> str:
-        """Get the Network IP of the network object 
+        """Get the Network IP of the Network object 
 
         Raises
         ------
@@ -116,7 +127,7 @@ class network:
         else: raise ValueError("RmiNetworkLib: network_ip is None type")
 
     def get_mask_str(self) -> str:
-        """Get the Mask of the network object 
+        """Get the Mask of the Network object 
 
         Raises
         ------
